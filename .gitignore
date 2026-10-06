@@ -1,0 +1,17 @@
+# Local caches and generated browser-test files
+.cache/
+browser/.cache/
+browser/node_modules/
+browser/test-results/
+browser/playwright-report/
+browser/artifacts/
+
+# Per-deployment configuration and secrets
+.env
+.env.*
+!.env.example
+.cloudflared/
+deploy/cloudflared.yml
+*.pem
+*.key
+*.credentials.json

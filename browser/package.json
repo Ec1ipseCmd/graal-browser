@@ -1,0 +1,17 @@
+{
+  "name": "graal-browser",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test test/*.test.mjs",
+    "test:browser": "playwright test",
+    "test:live": "LIVE_GRAAL=1 playwright test",
+    "diagnose:connection": "node scripts/check-connection.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "pngjs": "^7.0.0"
+  }
+}

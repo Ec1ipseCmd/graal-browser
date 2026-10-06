@@ -1,0 +1,42 @@
+name: Checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  browser-client:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: browser/package-lock.json
+      - name: Install dependencies
+        working-directory: browser
+        run: npm ci
+      - name: Check dependency advisories
+        working-directory: browser
+        run: npm audit --audit-level=low
+      - name: Run unit tests
+        working-directory: browser
+        run: npm test
+      - name: Run browser tests
+        working-directory: browser
+        run: |
+          npx playwright install --with-deps chromium
+          npm run test:browser
+      - name: Scan repository history for secrets
+        env:
+          GITLEAKS_VERSION: 8.30.1
+        run: |
+          curl -fsSLO "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          curl -fsSLO "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_checksums.txt"
+          grep " gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz$" "gitleaks_${GITLEAKS_VERSION}_checksums.txt" | sha256sum --check
+          tar -xzf "gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" gitleaks
+          ./gitleaks git . --redact --exit-code 1

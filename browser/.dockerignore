@@ -1,0 +1,15 @@
+**
+!Dockerfile
+!package.json
+!package-lock.json
+!server.mjs
+!asset-cache.mjs
+!request-origin.mjs
+!presence.mjs
+!trusted-scripts.mjs
+!public/
+!public/**
+!scripts/
+!scripts/**
+!test/
+!test/**

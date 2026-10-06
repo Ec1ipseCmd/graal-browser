@@ -1,0 +1,6 @@
+tunnel: YOUR_TUNNEL_ID
+credentials-file: /etc/cloudflared/tunnel.json
+ingress:
+  - hostname: graal.example.com
+    service: http://client:4173
+  - service: http_status:404
