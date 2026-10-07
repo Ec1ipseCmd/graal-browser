@@ -5,7 +5,10 @@ test('automatic client entry and fullscreen', async ({ page }) => {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('/');
-  await expect(page.locator('#welcome, #launch, #end, #fill-window, a')).toHaveCount(0);
+  await expect(page.locator('#welcome, #launch, #end, #fill-window')).toHaveCount(0);
+  const githubLink = page.getByRole('link', { name: 'GitHub repository' });
+  await expect(githubLink).toHaveAttribute('href', 'https://github.com/Ec1ipseCmd/graal-browser');
+  await expect(githubLink).toHaveAttribute('target', '_blank');
   await expect(page.locator('iframe')).toHaveAttribute('src', '/client/');
   await expect(page.locator('#status')).toHaveText('Official client open');
   await page.getByRole('button', { name: 'Full screen' }).click();
